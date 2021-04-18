@@ -1,11 +1,8 @@
 import { GetStaticProps } from 'next';
 import React from 'react'
 import { Container } from 'react-bootstrap';
-import getConfig from 'next/config'
 import Autocomplete from '../components/Autocomplete';
 import Layout from '../components/Layout';
-
-const { publicRuntimeConfig } = getConfig()
 
 type Props = {
   indexField: string
@@ -23,6 +20,6 @@ export default function Home(props: Props) {
 
 
 export const getStaticProps: GetStaticProps = async () => {
-  const indexField = publicRuntimeConfig.index.field
+  const indexField = process.env.INDEX_FIELD
   return { props: { indexField } }
 }

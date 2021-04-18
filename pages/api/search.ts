@@ -2,17 +2,15 @@ import { NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import { ExtendedRequest } from '../../interfaces/server';
 import middleware from '../../middleware/database';
-import getConfig from 'next/config'
-
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 
 const handler = nextConnect<ExtendedRequest, NextApiResponse>();
-
 handler.use(middleware);
 
 handler.get(async (req, res) => {
   
   const { query, path, fuzzy } = req.query;
+  const { indexName, collection } = req.mongodb;
+  
   const fuzzyOptions = fuzzy === "true" ? {
     "maxEdits": 2,
     "prefixLength": 3
@@ -22,7 +20,7 @@ handler.get(async (req, res) => {
     const pipeline = [
       {
         "$search": {
-          'index': publicRuntimeConfig.index.name,
+          'index': indexName,
           "autocomplete": {
             "query": `${query}`,
             "path": `${path}`,
@@ -33,7 +31,6 @@ handler.get(async (req, res) => {
       }
     ]
 
-    const collection = req.mongodb.db.collection(serverRuntimeConfig.mongodb.collection)
     let result = await collection.aggregate(pipeline).toArray();
     return res.send(result);
   } catch (e) {

@@ -1,18 +1,13 @@
 import { MongoClient, Db } from 'mongodb';
 import nextConnect from 'next-connect';
 import { ExtendedRequest } from '../interfaces/server';
-import getConfig from 'next/config'
-
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
-
-
 
 async function database(req: any, res: any, next: any) {
 
   try {
-    if (!global['mongodb'] || !global['mongodb'].dbClient) {
+    if (!global['mongodb'] || !global['mongodb'].client) {
       console.log(`Adding mongo client to global...`);
-      const client = new MongoClient(serverRuntimeConfig.mongodb.uri, {
+      const client = new MongoClient(process.env.MDB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
@@ -22,9 +17,16 @@ async function database(req: any, res: any, next: any) {
         console.log(`MongoDB client connected!`);
       }
 
+      const db = client.db(process.env.DB_NAME);
+      const collection = db.collection(process.env.COLLECTION_NAME);
+      const indexName = process.env.INDEX_NAME;
+      const indexField = process.env.INDEX_FIELD;
       global['mongodb'] = {
-        dbClient: client,
-        db: client.db(serverRuntimeConfig.mongodb.db)
+        client,
+        db,
+        collection,
+        indexField,
+        indexName
       }
     }
 
