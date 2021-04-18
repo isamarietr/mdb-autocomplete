@@ -29,13 +29,13 @@ _The default Next.js `start` script has been updated to first build the applicat
 
 ## Notes
 
-In both development and production the application will start at http://localhost:3000 by default. The default port can be changed with `-p` in the `dev` and `start:next` scripts in `package.json`, like:
+In both development and production the application will start at http://localhost:3000 by default. The default port can be changed with `-p` in the `dev` and `start:prod` scripts in `package.json`, like:
 ```bash
 ...
 "scripts": {
     "dev": "next -p 4000",
     ...
-    "start:next": "next start -p 4000",
+    "start:prod": "next start -p 4000",
     ...
   }
 ...

@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
-    "build:next": "next build",
-    "start:next": "next start",
-    "start": "npm run build:next && npm run start:next",
+    "build:prod": "next build",
+    "start:prod": "next start",
+    "start": "npm run build:prod && npm run start:prod",
     "type-check": "tsc"
   },
   "dependencies": {
