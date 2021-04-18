@@ -1,41 +1,42 @@
-# TypeScript Next.js example
+# Next.js Starter Kit
 
-This is a really simple project that shows the usage of Next.js with TypeScript.
+This is a starter kit project based on the [with-typescript](https://github.com/vercel/next.js/tree/canary/examples/with-typescript) example project which shows the usage of Next.js with TypeScript. This starter kit also includes Bootstrap (including react-bootstrap), MongoDB client (with api middleware), Axios (promise-based http client), and a `sample.env.local` to configure environment variables.
 
-## Deploy your own
+[Learn Next.js](https://nextjs.org/learn).
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+## Environment
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript&project-name=with-typescript&repository-name=with-typescript)
+Copy `sample.env.local` to `.env.local` to make this configuration accessible to client and/or server-side code.
 
-## How to use it?
+Learn more about [Environment Variables](https://nextjs.org/docs/basic-features/environment-variables#loading-environment-variables) in Next.js.
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+## Development
+
+Start the server in development mode with hot-code reloading.
 
 ```bash
-npx create-next-app --example with-typescript with-typescript-app
-# or
-yarn create next-app --example with-typescript with-typescript-app
+npm run dev
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## Production 
+
+Start the application in production mode. 
+
+```bash
+npm start
+```
+_The default Next.js `start` script has been updated to first build the application._
 
 ## Notes
 
-This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
-
+In both development and production the application will start at http://localhost:3000 by default. The default port can be changed with `-p` in the `dev` and `start:next` scripts in `package.json`, like:
+```bash
+...
+"scripts": {
+    "dev": "next -p 4000",
+    ...
+    "start:next": "next start -p 4000",
+    ...
+  }
+...
 ```
-npm install --save-dev typescript
-```
-
-To enable TypeScript's features, we install the type declarations for React and Node.
-
-```
-npm install --save-dev @types/react @types/react-dom @types/node
-```
-
-When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
-
-Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
-
-A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
