@@ -10,8 +10,6 @@ handler.get(async (req, res) => {
   const { query, path, limit, fuzzy } = req.query;
   const { indexName, indexField, collection } = req.mongodb;
 
-  console.log(`mongodb`, indexName, indexField);
-  
   const fuzzyOptions = fuzzy === "true" ? {
     "maxEdits": 2,
     "prefixLength": 3

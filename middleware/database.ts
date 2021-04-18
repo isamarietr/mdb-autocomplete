@@ -6,7 +6,6 @@ async function database(req: any, res: any, next: any) {
 
   try {
     if (!global['mongodb'] || !global['mongodb'].client) {
-      console.log(`Adding mongo client to global...`);
       const client = new MongoClient(process.env.MDB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -39,7 +38,6 @@ async function database(req: any, res: any, next: any) {
 }
 
 const middleware = nextConnect<ExtendedRequest>();
-
 middleware.use(database);
 
 export default middleware;

@@ -11,7 +11,7 @@ type Props = {
 
 const Autocomplete = ({ indexField }: Props) => {
 
-  const [query, setQuery] = useState(null)
+  const [query, setQuery] = useState('')
   const [matches, setMatches] = useState(null)
   const [results, setResults] = useState(null)
   const [isFuzzyMatch, setFuzzyMatch] = useState(false)
@@ -24,8 +24,8 @@ const Autocomplete = ({ indexField }: Props) => {
   const renderMatches = () => {
     let matchList = null
     if (matches) {
-      matchList = matches.map(match => {
-        return match && match.score ? <a href="#" className="list-group-item list-group-item-action" onClick={() => { onSelect(match) }}>{match[indexField]} <i>(Score: {match.score.toFixed(3)})</i></a> : null
+      matchList = matches.map((match, index) => {
+        return match && match.score ? <a href="#" key={`match-${index}`} className="list-group-item list-group-item-action" onClick={() => { onSelect(match) }}>{match[indexField]} <i>(Score: {match.score.toFixed(3)})</i></a> : null
       })
     }
     return <div className="list-group position-fixed z-index-1000">
@@ -42,15 +42,15 @@ const Autocomplete = ({ indexField }: Props) => {
     if (results) {
       resultsEl = results.map((result, index) => {
         return (
-          <Card>
+          <Card key={`card-${index}`} >
             <Accordion.Toggle eventKey={`${index}`} as={Card.Header}>
               Id: {result._id}
             </Accordion.Toggle>
             <Accordion.Collapse eventKey={`${index}`}>
               <Card.Body>
                 {
-                  Object.keys(result).map(key => {
-                    return <Row><code className={key === indexField ? 'highlight' : ''}><b>{key}</b>: {result[key]} </code></Row>
+                  Object.keys(result).map((key, index) => {
+                    return <Row key={`card-body-${index}`} ><code className={key === indexField ? 'highlight' : ''}><b>{key}</b>: {result[key]} </code></Row>
                   })
                 }
               </Card.Body>
@@ -59,10 +59,11 @@ const Autocomplete = ({ indexField }: Props) => {
         )
       })
     }
-    return <Accordion className="mt-5" defaultActiveKey="0">
-      {results ? <p>Found {results.length} results</p> : null}
-      {resultsEl}
-    </Accordion>
+    return (
+      <Accordion className="mt-5" defaultActiveKey="0">
+        {results ? <p>Found {results.length} results</p> : null}
+        {resultsEl}
+      </Accordion>)
   }
 
   /**
@@ -72,7 +73,6 @@ const Autocomplete = ({ indexField }: Props) => {
   const onSelect = (match: any) => {
     setQuery(match[indexField]);
     setMatches(null);
-
     axios.get(`/api/document/${match._id}`).then(response => {
       console.log(`data`, response);
       setResults([response.data]);
@@ -87,20 +87,15 @@ const Autocomplete = ({ indexField }: Props) => {
    */
   const onKeyDown = async (event: any) => {
     setMatches(null)
-
     if (event.key === 'Enter') {
       axios.get(`/api/search?query=${event.target.value}&path=${indexField}&limit=${searchLimit}&fuzzy=${isFuzzyMatch}`).then(response => {
         console.log(`data`, response);
-
         setResults(response.data);
       }).catch(error => {
         console.log(error.response)
       })
       event.preventDefault();
     }
-
-    
-
   }
 
   /**
@@ -108,14 +103,11 @@ const Autocomplete = ({ indexField }: Props) => {
    * @param event 
    */
   const onQueryChange = async (event: any) => {
-    console.log(event.target.value);
     setQuery(event.target.value);
     setResults(null);
-
     if (event.target.value) {
-      axios.get(`/api/autocomplete?query=${event.target.value}&path=str5074&limit=${searchLimit}&fuzzy=${isFuzzyMatch}`).then(response => {
+      axios.get(`/api/autocomplete?query=${event.target.value}&path=${indexField}&limit=${searchLimit}&fuzzy=${isFuzzyMatch}`).then(response => {
         console.log(`data`, response);
-
         setMatches(response.data);
       }).catch(error => {
         console.log(error.response)
@@ -142,7 +134,7 @@ const Autocomplete = ({ indexField }: Props) => {
                 <Form.Text className="mb-1" muted>
                   Enter 2 characters or more to autocomplete values in {indexField}
                 </Form.Text>
-                <Form.Control id="inlineFormInputName" placeholder={`Try entering "born" or "along"`} onChange={onQueryChange} onKeyDown={onKeyDown} value={query} />
+                <Form.Control placeholder={`Try entering "born" or "along"`} onChange={onQueryChange} onKeyDown={onKeyDown} value={query} />
                 {renderMatches()}
               </Col>
               <Col xs="auto" className="my-1">
