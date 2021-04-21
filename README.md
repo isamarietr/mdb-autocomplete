@@ -1,8 +1,12 @@
-# Next.js Starter Kit
+# MongoDB Autocomplete 
 
-This is a starter kit project based on the [with-typescript](https://github.com/vercel/next.js/tree/canary/examples/with-typescript) example project which shows the usage of Next.js with TypeScript. This starter kit also includes Bootstrap (including react-bootstrap), MongoDB client (with api middleware), Axios (promise-based http client), and a `sample.env.local` to configure environment variables.
+This application uses MongoDB's Autocomplete feature to display potential autocomplete matches in the search input field.
 
-[Learn Next.js](https://nextjs.org/learn).
+Learn more about MongoDB's [Autocomplete](https://docs.atlas.mongodb.com/reference/atlas-search/autocomplete/).
+
+https://user-images.githubusercontent.com/23062728/115612913-c86a6f00-a2b9-11eb-9981-0fcd25ece29c.mov
+
+
 
 ## Environment
 
