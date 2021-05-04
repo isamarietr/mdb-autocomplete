@@ -6,3 +6,10 @@ export const setLoading = (isLoading: boolean) => ({
     isLoading
   }
 });
+
+export const setTitle = (title: string) => ({
+  type: ACTIONS.SET_TITLE,
+  payload: {
+    title
+  }
+});

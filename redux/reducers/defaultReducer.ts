@@ -7,7 +7,14 @@ export default function(state = initialState, action) {
       const { isLoading } = action.payload;
       return {
         ...state,
-        isLoading: isLoading
+        isLoading
+      };
+    }
+    case ACTIONS.SET_TITLE: {
+      const { title } = action.payload;
+      return {
+        ...state,
+        title
       };
     }
     default:

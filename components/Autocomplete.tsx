@@ -1,8 +1,7 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Accordion, Card, Form, Col, Container, Row } from 'react-bootstrap';
 import Layout from '../components/Layout';
-import { setLoading } from '../redux/actions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../redux/actions';
@@ -23,6 +22,13 @@ const Autocomplete = ({ indexField, actions, state }: Props) => {
   const [results, setResults] = useState(null)
   const [isFuzzyMatch, setFuzzyMatch] = useState(false)
   const [searchLimit, setSearchLimit] = useState(10)
+
+  const TITLE: string = 'Auto Complete';
+
+  useEffect(() => {
+    console.log(`Changing title from ${state.title} to ${TITLE}`);
+    actions.setTitle(TITLE);
+  }, [])
 
   /**
    * renderMatches
@@ -94,9 +100,6 @@ const Autocomplete = ({ indexField, actions, state }: Props) => {
    */
   const onKeyDown = async (event: any) => {
     setMatches(null)
-    console.log(`state is `, state);
-    
-    actions.setLoading(true)
     if (event.key === 'Enter') {
       axios.get(`/api/search?query=${event.target.value}&path=${indexField}&limit=${searchLimit}&fuzzy=${isFuzzyMatch}`).then(response => {
         console.log(`data`, response);
@@ -132,7 +135,7 @@ const Autocomplete = ({ indexField, actions, state }: Props) => {
    * render
    */
   return (
-    <Layout title="Auto-Complete">
+    <Layout title={state.title}>
       <Container fluid className="pt-5 mx-auto" >
         <Col className="justify-items-center">
           <Row>
