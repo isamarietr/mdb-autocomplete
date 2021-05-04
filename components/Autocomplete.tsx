@@ -2,14 +2,21 @@
 import React, { useState } from 'react'
 import { Accordion, Card, Form, Col, Container, Row } from 'react-bootstrap';
 import Layout from '../components/Layout';
+import { setLoading } from '../redux/actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as Actions from '../redux/actions';
+import { IAppState } from '../redux/initial-state';
 
 const axios = require('axios');
 
 type Props = {
   indexField: string
+  actions: any;
+  state: IAppState
 }
 
-const Autocomplete = ({ indexField }: Props) => {
+const Autocomplete = ({ indexField, actions, state }: Props) => {
 
   const [query, setQuery] = useState('')
   const [matches, setMatches] = useState(null)
@@ -87,6 +94,9 @@ const Autocomplete = ({ indexField }: Props) => {
    */
   const onKeyDown = async (event: any) => {
     setMatches(null)
+    console.log(`state is `, state);
+    
+    actions.setLoading(true)
     if (event.key === 'Enter') {
       axios.get(`/api/search?query=${event.target.value}&path=${indexField}&limit=${searchLimit}&fuzzy=${isFuzzyMatch}`).then(response => {
         console.log(`data`, response);
@@ -164,4 +174,21 @@ const Autocomplete = ({ indexField }: Props) => {
   )
 }
 
-export default Autocomplete
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(Actions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Autocomplete);
+
+// export default Autocomplete
